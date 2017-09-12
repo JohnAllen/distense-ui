@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 export const RECEIVE_ACCOUNTS = 'RECEIVE_ACCOUNTS'
+export const USER_AUTHENTICATED = 'USER_AUTHENTICATED'
 
 const accountByAddress = (state = {}, action) => {
   switch (action.type) {
@@ -17,7 +18,7 @@ const accountByAddress = (state = {}, action) => {
   }
 }
 
-const accounts = (state = [], action) => {
+const allAccounts = (state = [], action) => {
   switch (action.type) {
     case RECEIVE_ACCOUNTS:
       return (action.accounts || []).map(account => account.address)
@@ -28,7 +29,7 @@ const accounts = (state = [], action) => {
 
 export default combineReducers({
   accountByAddress,
-  accounts,
+  allAccounts,
 })
 
 export const getAccount = (state, address) => {

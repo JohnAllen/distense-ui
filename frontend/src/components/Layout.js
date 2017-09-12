@@ -8,6 +8,7 @@ import {
   Button
 } from 'semantic-ui-react'
 
+
 export default ({ children, title }) => (
   <div>
     <Menu fixed='top' inverted>
@@ -18,7 +19,7 @@ export default ({ children, title }) => (
         <Menu.Item as={Link} to='/about'>About</Menu.Item>
         <Menu.Item as={Link} to='/tasks'>Tasks</Menu.Item>
         <Menu.Item>
-          <Button primary as={Link} to='/tasks/create'>Create Task</Button>
+          <Button inverted={true} color='teal' as={Link} to='/tasks/create'>Create Task</Button>
         </Menu.Item>
       </Container>
     </Menu>
