@@ -36,7 +36,7 @@ class CreateTask extends Component {
 
   onChangeTitle = ({ target: { value } }) => {
     //  TODO replace '## Task Title Goes Here' in taskSpec with the title value
-    if (value.length <= 50)
+    if (value.length <= 100)
       this.setState({ title: value })
   }
 

@@ -29,6 +29,7 @@ export const getAllAccounts = () => (dispatch, getState) => {
   const coinbase = web3.eth.coinbase // handle one address for now -- keep it simple
 
   if (!selectedAddress || !coinbase) {
+    // TODO dispatch a no account action here?
     console.log(`No accounts`);
   } else {
     dispatch(setAddressAction(coinbase))
