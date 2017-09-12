@@ -22,6 +22,7 @@ export const tagsOptions = [
   'Open Source',
   'Planning',
   'ReactJS',
+  'Redux',
   'Repo Contract',
   'Security',
   'Semantic UI',
