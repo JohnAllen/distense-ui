@@ -17,11 +17,11 @@ import { getAllAccounts } from './actions/accounts'
 import Home from './pages/Home'
 import About from './pages/About'
 
-import CreateTask from './pages/CreateTask'
+import ProposeTask from './pages/ProposeTask'
 import Tasks from './pages/Tasks'
 import Task from './pages/Task'
 
-import CreatePullRequest from './pages/CreatePullRequest'
+import SubmitPullRequest from './pages/SubmitPullRequest'
 import PullRequests from './pages/PullRequests'
 import PullRequest from './pages/PullRequest'
 
@@ -39,9 +39,9 @@ const Root = () => (
       <Route exact path='/' component={Home}/>
       <Route path='/about' component={About}/>
       <Route path='/tasks/:title/:id' component={Task}/>
-      <Route path='/tasks/create' component={CreateTask}/>
+      <Route path='/tasks/propose' component={ProposeTask}/>
       <Route path='/tasks' component={Tasks}/>
-      <Route exact path='/pullrequests/create' component={CreatePullRequest}/>
+      <Route exact path='/pullrequests/submit' component={SubmitPullRequest}/>
       <Route path='/pullrequests/:title/:id' component={PullRequest}/>
       <Route path='/pullrequests' component={PullRequests}/>
     </Switch>

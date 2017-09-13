@@ -15,7 +15,7 @@ export default ({ children, title }) => (
         <Menu.Menu position='right'>
           <Menu.Item as={Link} to='/tasks'>View Tasks</Menu.Item>
           <Menu.Item as={Link} to='/tasks/create'>Create Task</Menu.Item>
-          <Menu.Item as={Link} to='/pullrequests/create'>Submit Work</Menu.Item>
+          <Menu.Item as={Link} to='/pullrequests/submit'>Submit Work</Menu.Item>
           <Menu.Item as={Link} to='/pullrequests'>Review Work</Menu.Item>
         </Menu.Menu>
       </Container>

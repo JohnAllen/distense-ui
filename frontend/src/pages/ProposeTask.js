@@ -21,7 +21,7 @@ const tagOption = tag => {
   return { text: tag, key: value, value }
 }
 
-class CreateTask extends Component {
+class ProposeTask extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -205,4 +205,4 @@ const mapDispatchToProps = dispatch => ({
   createTask: task => dispatch(createTask(task))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateTask)
+export default connect(mapStateToProps, mapDispatchToProps)(ProposeTask)

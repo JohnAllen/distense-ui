@@ -89,11 +89,12 @@ const submitPullRequest = pullRequest => ({
   // Add pullRequest to IPFS.  Use dag.put instead of files.add because task is object/dag node not a file
   const hash = await ipfs.dag.put(pullRequest, { format: 'dag-cbor', hashAlg: 'sha2-256' })
   pullRequest._id = hash.toBaseEncodedString()
+  console.log(`Pull request id: ${pullRequest._id}`);
 
   dispatch(submitPullRequest(pullRequest))
 
   //  Add task IPFS hash to blockchain
-  await addPullRequest(pullRequest._id, { from: pullRequest.createdBy })
+  await addPullRequest(pullRequest._id, taskId, { from: pullRequest.createdBy })
 
   dispatch(receivePullRequests(pullRequest))
 

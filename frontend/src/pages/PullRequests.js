@@ -6,6 +6,8 @@ import { Button, Table } from 'semantic-ui-react'
 
 import { fetchPullRequests } from '../actions/pullRequests'
 import { getAllPullRequests } from '../reducers/pullRequests'
+import { fetchTasks } from '../actions/tasks'
+import { getAllTasks } from '../reducers/tasks'
 
 import Head from '../components/common/Head'
 import Layout from '../components/Layout'
@@ -28,7 +30,7 @@ class PullRequests extends Component {
       this.setState({
         pullRequests: this.props.pullRequests
       })
-    }, 3000)
+    }, 1000)
   }
 
   handleSort = clickedColumn => () => {
@@ -51,6 +53,7 @@ class PullRequests extends Component {
 
   componentWillMount() {
     this.props.fetchPullRequests()
+    this.props.fetchTasks()
   }
 
   render() {
@@ -96,7 +99,10 @@ class PullRequests extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {pullRequests.length ?
+            {pullRequests.length === 0 ?
+              <Table.Cell>
+                No pull requests to review
+              </Table.Cell> : pullRequests.length ?
               pullRequests.map(pullRequest => (
                 <PullRequestListItem
                   key={pullRequest._id}
@@ -112,7 +118,7 @@ class PullRequests extends Component {
   }
 }
 
-const PullRequestListItem = ({ pullRequest }) => (
+const PullRequestListItem = ({ pullRequest, task }) => (
   <Table.Row key={pullRequest._id}>
     <Table.Cell>
       <Link
@@ -123,8 +129,7 @@ const PullRequestListItem = ({ pullRequest }) => (
       </Link>
     </Table.Cell>
     <Table.Cell singleLine>
-      Tags
-      {/*<Tags tags={pullRequest.tags}/>*/}
+      <Tags tags={pullRequest.tags}/>
     </Table.Cell>
     <Table.Cell>
       100
@@ -132,7 +137,7 @@ const PullRequestListItem = ({ pullRequest }) => (
     </Table.Cell>
     <Table.Cell>
       Github url
-      {/*{pullRequest.reward}*/}
+      {pullRequest.reward}
     </Table.Cell>
     <Table.Cell>
       <Button
@@ -152,11 +157,13 @@ const PullRequestListItem = ({ pullRequest }) => (
 )
 
 const mapStateToProps = state => ({
-  pullRequests: getAllPullRequests(state)
+  pullRequests: getAllPullRequests(state),
+  tasks: getAllTasks(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchPullRequests: () => dispatch(fetchPullRequests())
+  fetchPullRequests: () => dispatch(fetchPullRequests()),
+  fetchTasks: () => dispatch(fetchTasks())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PullRequests)

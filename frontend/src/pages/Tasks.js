@@ -29,7 +29,7 @@ class Tasks extends Component {
       this.setState({
         tasks: this.props.tasks
       })
-    }, 3000)
+    }, 2000)
   }
 
   handleSort = clickedColumn => () => {
@@ -103,15 +103,18 @@ class Tasks extends Component {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {tasks.length ?
-              tasks.map(task => (
-                <Task
-                  key={task._id}
-                  task={task}
-                />
-              )) : <Table.Cell>
-                Loading tasks...
-              </Table.Cell>
+            {tasks.length === 0 ?
+              <Table.Cell>
+                No available tasks
+              </Table.Cell> : tasks.length ?
+                tasks.map(task => (
+                  <TaskListItem
+                    key={tasks._id}
+                    task={task}
+                  />
+                )) : <Table.Cell>
+                  Loading tasks...
+                </Table.Cell>
             }
           </Table.Body>
         </Table>
@@ -119,7 +122,7 @@ class Tasks extends Component {
   }
 }
 
-const Task = ({ task }) => (
+const TaskListItem = ({ task }) => (
   <Table.Row key={task._id}>
     <Table.Cell>
       <Link

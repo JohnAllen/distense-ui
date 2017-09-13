@@ -11,7 +11,7 @@ import Layout from '../components/Layout'
 import Tags from '../components/common/Tags'
 
 
-class SubmitWork extends Component {
+class SubmitPullRequest extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -109,4 +109,4 @@ const mapDispatchToProps = dispatch => ({
   createPullRequest: taskId => dispatch(createPullRequest(taskId))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SubmitWork)
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitPullRequest)
