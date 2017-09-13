@@ -4,62 +4,61 @@ import _ from 'lodash'
 import { Link } from 'react-router-dom'
 import { Button, Table } from 'semantic-ui-react'
 
-import { fetchTasks } from '../actions/tasks'
-import { getAllTasks } from '../reducers/tasks'
+import { fetchPullRequests } from '../actions/pullRequests'
+import { getAllPullRequests } from '../reducers/pullRequests'
 
 import Head from '../components/common/Head'
 import Layout from '../components/Layout'
 import Tags from '../components/common/Tags'
 
 
-class Tasks extends Component {
+class PullRequests extends Component {
   constructor(props) {
     super(props)
     this.state = {
       column: null,
-      tasks: this.props.tasks || [],
+      pullRequests: this.props.pullRequests || [],
       direction: null
     }
     this.handleSort = this.handleSort.bind(this)
   }
 
   componentDidMount() {
-    //  Not sure why tasks: this.props.tasks || [], above doesn't accomplish this
     setTimeout(() => {
       this.setState({
-        tasks: this.props.tasks
+        pullRequests: this.props.pullRequests
       })
     }, 3000)
   }
 
   handleSort = clickedColumn => () => {
-    const { column, tasks, direction } = this.state
+    const { column, pullRequests, direction } = this.state
 
     if (column !== clickedColumn) {
       this.setState({
         column: clickedColumn,
-        tasks: _.sortBy(tasks, [clickedColumn]),
+        pullRequests: _.sortBy(pullRequests, [clickedColumn]),
         direction: 'ascending'
       })
       return
     }
 
     this.setState({
-      tasks: tasks.reverse(),
+      pullRequests: pullRequests.reverse(),
       direction: direction === 'ascending' ? 'descending' : 'ascending'
     })
   }
 
   componentWillMount() {
-    this.props.fetchTasks()
+    this.props.fetchPullRequests()
   }
 
   render() {
-    const { column, tasks, direction } = this.state
+    const { column, pullRequests, direction } = this.state
 
     return (
       <Layout>
-        <Head title='Available Tasks'/>
+        <Head title='Reviewable Pull Requests'/>
         <Table
           sortable
           striped
@@ -82,7 +81,7 @@ class Tasks extends Component {
                 sorted={column === 'Status' ? direction : null}
                 onClick={this.handleSort('status')}
               >
-                Status
+                Reviews
               </Table.HeaderCell>
               <Table.HeaderCell
                 sorted={column === 'Reward' ? direction : null}
@@ -91,26 +90,20 @@ class Tasks extends Component {
                 Reward
               </Table.HeaderCell>
               <Table.HeaderCell
-                sorted={column === 'Date' ? direction : null}
-                onClick={this.handleSort('createdAt')}
               >
-                Created
-              </Table.HeaderCell>
-              <Table.HeaderCell
-              >
-                Submit
+                Approve
               </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {tasks.length ?
-              tasks.map(task => (
-                <Task
-                  key={task._id}
-                  task={task}
+            {pullRequests.length ?
+              pullRequests.map(pullRequest => (
+                <PullRequestListItem
+                  key={pullRequest._id}
+                  pullRequest={pullRequest}
                 />
               )) : <Table.Cell>
-                Loading tasks...
+                Loading pull requests...
               </Table.Cell>
             }
           </Table.Body>
@@ -119,29 +112,27 @@ class Tasks extends Component {
   }
 }
 
-const Task = ({ task }) => (
-  <Table.Row key={task._id}>
+const PullRequestListItem = ({ pullRequest }) => (
+  <Table.Row key={pullRequest._id}>
     <Table.Cell>
       <Link
-        to={`/tasks/${task.title}/${task._id}`}
+        to={`/pullRequests/${pullRequest.title}/${pullRequest._id}`}
       >
-        {task.title}
+        Some title
+        {/*{pullRequest.title}*/}
       </Link>
     </Table.Cell>
     <Table.Cell singleLine>
-      <Tags tags={task.tags}/>
-    </Table.Cell>
-    <Table.Cell>
-      Task
+      Tags
+      {/*<Tags tags={pullRequest.tags}/>*/}
     </Table.Cell>
     <Table.Cell>
       100
+      {/*{pullRequest.reward}*/}
     </Table.Cell>
-    <Table.Cell
-      collapsing
-      textAlign='right'
-    >
-      {task.createdAt.toDateString()}
+    <Table.Cell>
+      Github url
+      {/*{pullRequest.reward}*/}
     </Table.Cell>
     <Table.Cell>
       <Button
@@ -152,10 +143,8 @@ const Task = ({ task }) => (
         fluid={true}
         size='mini'
       >
-        <Link
-          to={`/pullrequests/create/${task.title}/${task._id}`}
-        >
-          Submit
+        <Link to={`/pullrequests/${pullRequest.title}/${pullRequest._taskId}`}>
+          Review
         </Link>
       </Button>
     </Table.Cell>
@@ -163,11 +152,11 @@ const Task = ({ task }) => (
 )
 
 const mapStateToProps = state => ({
-  tasks: getAllTasks(state)
+  pullRequests: getAllPullRequests(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchTasks: () => dispatch(fetchTasks())
+  fetchPullRequests: () => dispatch(fetchPullRequests())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Tasks)
+export default connect(mapStateToProps, mapDispatchToProps)(PullRequests)

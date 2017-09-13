@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Form, Grid, Header, Item, Message, List } from 'semantic-ui-react'
+import { Grid, Header, List, Item } from 'semantic-ui-react'
 import ReactMarkdown from 'react-markdown'
+
+import { fetchPullRequest } from '../actions/pullRequests'
+import { getPullRequest } from '../reducers/pullRequests'
 
 import { fetchTask } from '../actions/tasks'
 import { getTask } from '../reducers/tasks'
@@ -10,78 +13,70 @@ import Head from '../components/common/Head'
 import Layout from '../components/Layout'
 import Tags from '../components/common/Tags'
 
-//  Default for now
-const TaskStatusMessage = ({ task }) => (
-  <Message>
-    <Message.Header>
-      Proposal
-    </Message.Header>
-    <p>
-      This task is in the proposal stage.
-    </p>
-    <Form.Input
-      type='text'
-      placeholder='Enter task reward'
-    />
-  </Message>
-)
 
-class Task extends Component {
+class PullRequest extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { }
+    this.handleSort = this.handleSort.bind(this)
+  }
+
   componentWillMount() {
     const {
       fetchTask, match: {
-        params: { id }
+        params: { taskId }
+      },
+      fetchPullRequest, match: {
+        params: { prId }
       }
     } = this.props
-    fetchTask(id)
+    fetchTask(taskId) // Fetch task to populate task details; PR just has PR ID and taskId
+    fetchPullRequest(prId)
   }
 
   render() {
-    const { task } = this.props
+    const { pullRequest } = this.props
 
     return (
       <Layout>
-        <Head title='Task'/>
-        <div className='task'>
-          {task ? (
+        <Head title='Pull Request'/>
+        <div>
+          {pullRequest ? (
             <Grid divided='vertically'>
               <Grid.Row columns={2}>
                 <Grid.Column>
                   <Item.Content>
-                    <Header style={{ textDecoration: 'underline' }} as='h2'>{task.title}</Header>
+                    <Header style={{ textDecoration: 'underline' }} as='h2'>{pullRequest.title}</Header>
                     <Item>
                       <List
                         horizontal
                         bulleted
                       >
-                        Tags: <Tags tags={task.tags}/>
+                        Tags: <Tags tags={pullRequest.tags}/>
                       </List>
                     </Item>
                     <Item>
-                      Issue URL:
-                      <a className='' target='_blank' href={task.issueURL}>
-                        {task.issueURL}
+                      Pull Request URL:
+                      <a className='' target='_blank' href={pullRequest.url}>
+                        {pullRequest.url}
                       </a>
                     </Item>
                     <Item.Meta>
-                      Created: {new Date(task.createdAt).toDateString()}
+                      Created: {new Date(pullRequest.createdAt).toDateString()}
                     </Item.Meta>
                     <Item.Meta>
-                      _id: {task._id}
+                      _id: {pullRequest._id}
                     </Item.Meta>
                   </Item.Content>
-                </Grid.Column>
-                <Grid.Column>
-                  <TaskStatusMessage/>
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
                 <Grid.Column>
-                  <ReactMarkdown source={task.spec}/>
+                  <ReactMarkdown source={pullRequest.spec}/>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-          ) : 'Loading task...'
+          ) : 'Loading pull request...'
           }
         </div>
       </Layout>
@@ -90,11 +85,13 @@ class Task extends Component {
 }
 
 const mapStateToProps = (state, { match: { params: { id } } }) => ({
+  pullRequest: getPullRequest(state, id),
   task: getTask(state, id)
 })
 
 const mapDispatchToProps = dispatch => ({
+  fetchPullRequest: id => dispatch(fetchPullRequest(id)),
   fetchTask: id => dispatch(fetchTask(id))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Task)
+export default connect(mapStateToProps, mapDispatchToProps)(PullRequest)

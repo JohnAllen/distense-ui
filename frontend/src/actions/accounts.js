@@ -1,7 +1,7 @@
 import web3 from '../web3'
 
 import { RECEIVE_ACCOUNTS } from '../reducers/accounts'
-import { SET_ADDRESS, SET_ADDRESS_BALANCE } from '../reducers/index';
+import { SET_ADDRESS } from '../reducers/index';
 
 
 const receiveAccountsAction = accounts => ({
@@ -11,11 +11,6 @@ const receiveAccountsAction = accounts => ({
 
 const setAddressAction = address => ({
   type: SET_ADDRESS,
-  address
-})
-
-const setAddressBalanceAction = address => ({
-  type: SET_ADDRESS_BALANCE,
   address
 })
 
@@ -32,7 +27,6 @@ export const getAllAccounts = () => (dispatch, getState) => {
     console.log(`No accounts`);
   } else {
     dispatch(setAddressAction(coinbase))
-    dispatch(setAddressBalanceAction(coinbase))
   }
 
 }

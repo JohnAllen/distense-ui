@@ -5,21 +5,19 @@ import {
   Divider,
   Menu,
   Segment,
-  Button
 } from 'semantic-ui-react'
 
 export default ({ children, title }) => (
   <div>
     <Menu fixed='top' inverted>
       <Container>
-        <Menu.Item as={Link} to='/' header>
-          Distense
-        </Menu.Item>
-        <Menu.Item as={Link} to='/about'>About</Menu.Item>
-        <Menu.Item as={Link} to='/tasks'>Tasks</Menu.Item>
-        <Menu.Item>
-          <Button primary as={Link} to='/tasks/create'>Create Task</Button>
-        </Menu.Item>
+        <Menu.Item as={Link} to='/' header>Distense</Menu.Item>
+        <Menu.Menu position='right'>
+          <Menu.Item as={Link} to='/tasks'>View Tasks</Menu.Item>
+          <Menu.Item as={Link} to='/tasks/create'>Create Task</Menu.Item>
+          <Menu.Item as={Link} to='/pullrequests/create'>Submit Work</Menu.Item>
+          <Menu.Item as={Link} to='/pullrequests'>Review Work</Menu.Item>
+        </Menu.Menu>
       </Container>
     </Menu>
 
@@ -32,7 +30,7 @@ export default ({ children, title }) => (
       style={{ margin: '3em 0em 0em', padding: '5em 0em' }}
     >
       <Container>
-        <Divider />
+        <Divider/>
         © {new Date().getFullYear()} Distense
       </Container>
     </Segment>

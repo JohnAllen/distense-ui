@@ -24,7 +24,8 @@ contract Tasks {
 
 //  Does this happen at time of reward determination or at simple addTask or both
   event LogNewProposal(address indexed taskId);
-  event LogNewTask(address indexed taskId, uint reward);
+  event LogAddTask(string indexed taskId);
+  event LogRewardDetermined(string indexed taskId, uint reward);
 
   function Tasks(address _DIDTokenAddress) {
     requiredDIDApprovalThreshold = 40;
@@ -56,8 +57,9 @@ contract Tasks {
     _task.rewardVoters.push(msg.sender);
 
     //  If DID threshold has been reached go ahead and determine the reward for the task
-    bool enoughDIDVoted = enoughDIDVotedOnTask(_ipfsHash);
-    if (enoughDIDVoted || _task.rewardVoters.length === 100) {
+    bool enoughDIDVoted
+    = enoughDIDVotedOnTask(_ipfsHash);
+    if (enoughDIDVoted || _task.rewardVoters.length == 100) {
       determineReward(_ipfsHash);
     }
 

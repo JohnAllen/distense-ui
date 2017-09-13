@@ -6,7 +6,6 @@ import * as contracts from '../contracts'
 import { REQUEST_TASKS, RECEIVE_TASKS, REQUEST_TASK, RECEIVE_TASK, SUBMIT_TASK } from '../reducers/tasks'
 
 
-
 const requestTasks = () => ({
   type: REQUEST_TASKS
 })
@@ -35,11 +34,10 @@ const getTaskByIndex = async index => {
 const getTaskByID = async id => {
   // Check task id/hash is stored in blockchain
   const { taskExists } = await contracts.Tasks  // confirm task id/hash stored in blockchain
-  if (!(await taskExists(id))) return
+  if (!(await taskExists(id))) return false
 
   await ipfsReady
 
-  // TODO obviously clean this up because for some reason .value does not work here
   const ipfsValue = await getIPFSDagDetail(id)
   const task = ipfsValue.value
   task._id = id
@@ -62,8 +60,11 @@ export const fetchTask = id => async (dispatch, getState) => {
   dispatch(requestTask(id))
 
   const task = await getTaskByID(id)
+  if (task) {
+    console.log(`Got task: ${task.title}`);
+    dispatch(receiveTask(task))
+  }
 
-  dispatch(receiveTask(task))
 }
 
 const submitTask = task => ({

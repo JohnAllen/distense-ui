@@ -25,21 +25,25 @@ contract PullRequests is Approvable {
   string[] public pullRequestIds;
   mapping (string => PullRequest) pullRequests;
 
-  event LogNewContribution(address indexed taskId, uint reward);
+  event LogNewContribution(string indexed taskId, string prId);
 
   function PullRequests (address _DIDTokenAddress, address _TasksAddress) {
     DIDToken didToken = DIDToken(_DIDTokenAddress);
     Tasks tasksContract = Tasks(_TasksAddress);
   }
 
-  function submitPullRequest(string _prId, string _taskId) external returns (bool) {
+  function addPullRequest(string _prId, string _taskId) external returns (bool) {
     pullRequests[_prId].createdBy = msg.sender;
     pullRequestIds.push(_prId);
   }
 
    function submitterVotedTask(string _taskId) public constant returns (bool) {
-//    TODO
+      // TODO check if submitter or work has voted on other peoples' work submitted
    }
+
+  function pullRequestExists(string _prId) public constant returns (bool) {
+    return pullRequestIds.contains(_prId);
+  }
 
   function getNumPullRequests() public constant returns (uint) {
     return pullRequestIds.length;
@@ -47,16 +51,16 @@ contract PullRequests is Approvable {
 
    function voteOnApproval(string _prId, bool _approve) external {
      PullRequest _pr = pullRequests[_prId];
-
 //     require(!approved(_id)); // TODO wondering if you should be allowed to vote after approval; could be useful information
 //     Task _task = Task(_id);
 //     _task.rewardVotes[msg.sender] = _reward;
 //     _task.rewardVoters.push(msg.sender);
    }
 
-  function approvePullRequest(_taskId, _prId) internal returns (bool) {
+  function approvePullRequest(string _taskId, string _prId) internal returns (bool) {
     LogNewContribution(_taskId, _prId);
-    return percentDIDApproved(_id) >= Tasks.;
+//    return percentDIDApproved(_id) >= Tasks.;
+    return true;
   }
 
   function numDIDApproved(string _prId) public constant returns (uint256) {
